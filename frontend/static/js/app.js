@@ -20,8 +20,7 @@ const formatDateTime = (value) => {
 const state = {
   lastSnapshot: null,
   pollingInterval: 15000,
-  timerId: null,
-  autoRefresh: true
+  timerId: null
 };
 
 const tableConfigs = {
@@ -147,8 +146,6 @@ const updateClusterMeta = (snapshot) => {
   document.getElementById('cluster-port').textContent = cluster.port ?? '—';
   document.getElementById('cluster-mode').textContent = normalizeMode(cluster.load_balancing_mode);
   document.getElementById('cluster-processes').textContent = snapshot.processes.length;
-  document.getElementById('cluster-sessions').textContent = snapshot.sessions.length;
-  document.getElementById('cluster-connections').textContent = snapshot.connections.length;
 };
 
 const updateMetrics = (snapshot) => {
@@ -157,7 +154,6 @@ const updateMetrics = (snapshot) => {
   document.getElementById('metric-connections').textContent = snapshot.connections.length;
   document.getElementById('metric-processes').textContent = snapshot.processes.length;
   document.getElementById('metric-locks').textContent = snapshot.locks.length;
-  document.getElementById('metric-licenses').textContent = snapshot.licenses.length;
 };
 
 const updateLicenses = (licenses) => {
@@ -166,8 +162,8 @@ const updateLicenses = (licenses) => {
 
   if (!licenses.length) {
     const li = document.createElement('li');
+    li.className = 'text-sm text-slate-400';
     li.textContent = 'Нет активных лицензий';
-    li.className = 'license-empty';
     list.appendChild(li);
     return;
   }
@@ -176,28 +172,20 @@ const updateLicenses = (licenses) => {
     const li = document.createElement('li');
 
     const name = document.createElement('span');
-    name.className = 'license-name';
+    name.className = 'text-base font-medium text-slate-100';
     name.textContent = license.full_presentation || license.user_name || license.session;
 
     const badge = document.createElement('span');
-    badge.className = 'badge badge--violet';
+    badge.className = 'tag badge-purple mt-1';
     badge.textContent = license.license_type || 'Неизвестно';
 
-    const meta = document.createElement('div');
-    meta.className = 'license-meta';
-
-    const host = document.createElement('span');
-    host.textContent = `Хост: ${license.host || '—'}`;
-
-    const series = document.createElement('span');
-    series.textContent = `Серия: ${license.series || '—'}`;
-
-    meta.appendChild(host);
-    meta.appendChild(series);
+    const details = document.createElement('span');
+    details.className = 'text-xs text-slate-400';
+    details.textContent = `${license.host || '—'} • ${license.series || '—'}`;
 
     li.appendChild(name);
     li.appendChild(badge);
-    li.appendChild(meta);
+    li.appendChild(details);
     list.appendChild(li);
   });
 };
@@ -242,32 +230,7 @@ const fetchSnapshot = async () => {
 
 const startPolling = () => {
   clearInterval(state.timerId);
-  if (!state.autoRefresh) return;
   state.timerId = setInterval(fetchSnapshot, state.pollingInterval);
 };
 
-const initControls = () => {
-  const refreshButton = document.getElementById('refresh-button');
-  const autoRefreshToggle = document.getElementById('auto-refresh-toggle');
-
-  if (refreshButton) {
-    refreshButton.addEventListener('click', () => {
-      fetchSnapshot();
-    });
-  }
-
-  if (autoRefreshToggle) {
-    autoRefreshToggle.addEventListener('change', (event) => {
-      state.autoRefresh = event.target.checked;
-      if (state.autoRefresh) {
-        fetchSnapshot();
-        startPolling();
-      } else {
-        clearInterval(state.timerId);
-      }
-    });
-  }
-};
-
-initControls();
 fetchSettings().then(fetchSnapshot).then(startPolling);
