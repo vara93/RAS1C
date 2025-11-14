@@ -1,0 +1,6 @@
+cluster : 08a960db-0d96-41dc-b930-0d79a4bd0663
+host : t03-1c11.fd.local
+port : 1541
+name : "Локальный кластер"
+load-balancing-mode : performance
+
