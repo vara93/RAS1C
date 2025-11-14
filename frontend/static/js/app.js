@@ -20,7 +20,8 @@ const formatDateTime = (value) => {
 const state = {
   lastSnapshot: null,
   pollingInterval: 15000,
-  timerId: null
+  timerId: null,
+  autoRefresh: true
 };
 
 const tableConfigs = {
@@ -146,6 +147,8 @@ const updateClusterMeta = (snapshot) => {
   document.getElementById('cluster-port').textContent = cluster.port ?? '—';
   document.getElementById('cluster-mode').textContent = normalizeMode(cluster.load_balancing_mode);
   document.getElementById('cluster-processes').textContent = snapshot.processes.length;
+  document.getElementById('cluster-sessions').textContent = snapshot.sessions.length;
+  document.getElementById('cluster-connections').textContent = snapshot.connections.length;
 };
 
 const updateMetrics = (snapshot) => {
@@ -154,40 +157,6 @@ const updateMetrics = (snapshot) => {
   document.getElementById('metric-connections').textContent = snapshot.connections.length;
   document.getElementById('metric-processes').textContent = snapshot.processes.length;
   document.getElementById('metric-locks').textContent = snapshot.locks.length;
-};
-
-const updateLicenses = (licenses) => {
-  const list = document.getElementById('licenses-list');
-  list.innerHTML = '';
-
-  if (!licenses.length) {
-    const li = document.createElement('li');
-    li.className = 'text-sm text-slate-400';
-    li.textContent = 'Нет активных лицензий';
-    list.appendChild(li);
-    return;
-  }
-
-  licenses.forEach((license) => {
-    const li = document.createElement('li');
-
-    const name = document.createElement('span');
-    name.className = 'text-base font-medium text-slate-100';
-    name.textContent = license.full_presentation || license.user_name || license.session;
-
-    const badge = document.createElement('span');
-    badge.className = 'tag badge-purple mt-1';
-    badge.textContent = license.license_type || 'Неизвестно';
-
-    const details = document.createElement('span');
-    details.className = 'text-xs text-slate-400';
-    details.textContent = `${license.host || '—'} • ${license.series || '—'}`;
-
-    li.appendChild(name);
-    li.appendChild(badge);
-    li.appendChild(details);
-    list.appendChild(li);
-  });
 };
 
 const fetchSettings = async () => {
@@ -206,7 +175,6 @@ const updateSnapshot = (snapshot) => {
   state.lastSnapshot = snapshot;
   updateClusterMeta(snapshot);
   updateMetrics(snapshot);
-  updateLicenses(snapshot.licenses || []);
   document.getElementById('last-updated').textContent = `Последнее обновление: ${formatDateTime(
     new Date().toISOString()
   )}`;
@@ -230,7 +198,32 @@ const fetchSnapshot = async () => {
 
 const startPolling = () => {
   clearInterval(state.timerId);
+  if (!state.autoRefresh) return;
   state.timerId = setInterval(fetchSnapshot, state.pollingInterval);
 };
 
+const initControls = () => {
+  const refreshButton = document.getElementById('refresh-button');
+  const autoRefreshToggle = document.getElementById('auto-refresh-toggle');
+
+  if (refreshButton) {
+    refreshButton.addEventListener('click', () => {
+      fetchSnapshot();
+    });
+  }
+
+  if (autoRefreshToggle) {
+    autoRefreshToggle.addEventListener('change', (event) => {
+      state.autoRefresh = event.target.checked;
+      if (state.autoRefresh) {
+        fetchSnapshot();
+        startPolling();
+      } else {
+        clearInterval(state.timerId);
+      }
+    });
+  }
+};
+
+initControls();
 fetchSettings().then(fetchSnapshot).then(startPolling);
