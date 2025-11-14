@@ -69,7 +69,8 @@
       </header>
 
       <main class="main">
-        <div class="container stack">
+        <div class="container">
+          <div class="content-shell stack">
           <section class="panel panel--cluster">
             <div class="panel-header">
               <div>
@@ -120,63 +121,51 @@
             </article>
           </section>
 
-          <section class="grid grid--two-cols">
-            <article class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="panel-eyebrow">Базы данных</p>
-                  <h2>Информационные базы</h2>
-                </div>
+          <section class="panel panel--tabs">
+            <div class="panel-header panel-header--tabs">
+              <div>
+                <p class="panel-eyebrow">Данные</p>
+                <h2>Обзор информационных объектов</h2>
               </div>
-              <div class="panel-body panel-body--table">
+              <div class="tablist" role="tablist" aria-label="Разделы данных">
+                <button class="tab-button is-active" role="tab" aria-selected="true" data-tab="infobases">
+                  Информационные базы
+                </button>
+                <button class="tab-button" role="tab" aria-selected="false" data-tab="sessions">
+                  Сеансы
+                </button>
+                <button class="tab-button" role="tab" aria-selected="false" data-tab="connections">
+                  Соединения
+                </button>
+                <button class="tab-button" role="tab" aria-selected="false" data-tab="locks">
+                  Блокировки
+                </button>
+              </div>
+            </div>
+            <div class="panel-body panel-body--table">
+              <div class="tab-panel is-active" role="tabpanel" data-tab-panel="infobases">
                 <div class="table-wrapper">
                   <table class="data-table" id="infobases-table"></table>
                 </div>
               </div>
-            </article>
-
-            <article class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="panel-eyebrow">Пользователи</p>
-                  <h2>Сеансы</h2>
-                </div>
-              </div>
-              <div class="panel-body panel-body--table">
+              <div class="tab-panel" role="tabpanel" data-tab-panel="sessions" hidden>
                 <div class="table-wrapper">
                   <table class="data-table" id="sessions-table"></table>
                 </div>
               </div>
-            </article>
-
-            <article class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="panel-eyebrow">Подключения</p>
-                  <h2>Соединения</h2>
-                </div>
-              </div>
-              <div class="panel-body panel-body--table">
+              <div class="tab-panel" role="tabpanel" data-tab-panel="connections" hidden>
                 <div class="table-wrapper">
                   <table class="data-table" id="connections-table"></table>
                 </div>
               </div>
-            </article>
-
-            <article class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="panel-eyebrow">Диагностика</p>
-                  <h2>Блокировки</h2>
-                </div>
-              </div>
-              <div class="panel-body panel-body--table">
+              <div class="tab-panel" role="tabpanel" data-tab-panel="locks" hidden>
                 <div class="table-wrapper">
                   <table class="data-table" id="locks-table"></table>
                 </div>
               </div>
-            </article>
+            </div>
           </section>
+          </div>
         </div>
       </main>
 

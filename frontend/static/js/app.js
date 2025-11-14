@@ -21,7 +21,8 @@ const state = {
   lastSnapshot: null,
   pollingInterval: 15000,
   timerId: null,
-  autoRefresh: true
+  autoRefresh: true,
+  activeTab: 'infobases'
 };
 
 const tableConfigs = {
@@ -85,6 +86,52 @@ const tableConfigs = {
     ],
     emptyMessage: 'Блокировки отсутствуют'
   }
+};
+
+const setActiveTab = (tabId, { focus = false } = {}) => {
+  state.activeTab = tabId;
+  const tabButtons = document.querySelectorAll('.tab-button');
+  const tabPanels = document.querySelectorAll('[data-tab-panel]');
+
+  tabButtons.forEach((button) => {
+    const isActive = button.dataset.tab === tabId;
+    button.classList.toggle('is-active', isActive);
+    button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+    button.tabIndex = isActive ? 0 : -1;
+    if (focus && isActive) {
+      button.focus();
+    }
+  });
+
+  tabPanels.forEach((panel) => {
+    const isActive = panel.dataset.tabPanel === tabId;
+    panel.classList.toggle('is-active', isActive);
+    panel.hidden = !isActive;
+  });
+};
+
+const initTabs = () => {
+  const tabButtons = document.querySelectorAll('.tab-button');
+  if (!tabButtons.length) return;
+
+  const tabs = Array.from(tabButtons);
+
+  tabs.forEach((button, index) => {
+    button.addEventListener('click', () => {
+      setActiveTab(button.dataset.tab);
+    });
+
+    button.addEventListener('keydown', (event) => {
+      if (event.key !== 'ArrowLeft' && event.key !== 'ArrowRight') return;
+      event.preventDefault();
+      const direction = event.key === 'ArrowRight' ? 1 : -1;
+      const nextIndex = (index + direction + tabs.length) % tabs.length;
+      const nextButton = tabs[nextIndex];
+      setActiveTab(nextButton.dataset.tab, { focus: true });
+    });
+  });
+
+  setActiveTab(state.activeTab);
 };
 
 const renderTable = ({ element, columns, emptyMessage }, rows) => {
@@ -225,5 +272,6 @@ const initControls = () => {
   }
 };
 
+initTabs();
 initControls();
 fetchSettings().then(fetchSnapshot).then(startPolling);
