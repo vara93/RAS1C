@@ -18,7 +18,6 @@ const formatDateTime = (value) => {
 };
 
 const state = {
-  chart: null,
   lastSnapshot: null,
   pollingInterval: 15000,
   timerId: null
@@ -31,7 +30,8 @@ const tableConfigs = {
       { key: 'name', label: 'Имя' },
       { key: 'uuid', label: 'UUID' },
       { key: 'descr', label: 'Описание' }
-    ]
+    ],
+    emptyMessage: 'Нет информационных баз'
   },
   sessions: {
     element: document.getElementById('sessions-table'),
@@ -42,8 +42,9 @@ const tableConfigs = {
       { key: 'host', label: 'Хост' },
       { key: 'app_id', label: 'Приложение' },
       { key: 'started_at', label: 'Старт', formatter: formatDateTime },
-      { key: 'last_active_at', label: 'Активность', formatter: formatDateTime }
-    ]
+      { key: 'last_active_at', label: 'Последняя активность', formatter: formatDateTime }
+    ],
+    emptyMessage: 'Нет активных сеансов'
   },
   connections: {
     element: document.getElementById('connections-table'),
@@ -54,7 +55,8 @@ const tableConfigs = {
       { key: 'host', label: 'Хост' },
       { key: 'process', label: 'Процесс' },
       { key: 'connected_at', label: 'Подключен', formatter: formatDateTime }
-    ]
+    ],
+    emptyMessage: 'Нет подключений'
   },
   processes: {
     element: document.getElementById('processes-table'),
@@ -63,9 +65,14 @@ const tableConfigs = {
       { key: 'host', label: 'Хост' },
       { key: 'port', label: 'Порт' },
       { key: 'pid', label: 'PID' },
-      { key: 'running', label: 'Статус', formatter: (value) => (value === true || value === 'yes' ? 'Работает' : 'Остановлен') },
+      {
+        key: 'running',
+        label: 'Статус',
+        formatter: (value) => (value === true || value === 'yes' ? 'Работает' : 'Остановлен')
+      },
       { key: 'connections', label: 'Соединений' }
-    ]
+    ],
+    emptyMessage: 'Нет активных процессов'
   },
   locks: {
     element: document.getElementById('locks-table'),
@@ -74,12 +81,14 @@ const tableConfigs = {
       { key: 'connection', label: 'Соединение' },
       { key: 'session', label: 'Сеанс' },
       { key: 'locked', label: 'Заблокировано', formatter: formatDateTime }
-    ]
+    ],
+    emptyMessage: 'Блокировки отсутствуют'
   }
 };
 
-const renderTable = ({ element, columns }, rows) => {
+const renderTable = ({ element, columns, emptyMessage }, rows) => {
   if (!element) return;
+
   const thead = document.createElement('thead');
   const headerRow = document.createElement('tr');
   columns.forEach(({ label }) => {
@@ -90,51 +99,88 @@ const renderTable = ({ element, columns }, rows) => {
   thead.appendChild(headerRow);
 
   const tbody = document.createElement('tbody');
-  rows.forEach((row) => {
+  if (!rows.length) {
     const tr = document.createElement('tr');
-    columns.forEach(({ key, formatter }) => {
-      const td = document.createElement('td');
-      const value = row[key];
-      td.textContent = formatter ? formatter(value) : value ?? '—';
-      tr.appendChild(td);
-    });
+    tr.className = 'empty-row';
+    const td = document.createElement('td');
+    td.colSpan = columns.length;
+    td.textContent = emptyMessage;
+    tr.appendChild(td);
     tbody.appendChild(tr);
-  });
+  } else {
+    rows.forEach((row) => {
+      const tr = document.createElement('tr');
+      columns.forEach(({ key, formatter }) => {
+        const td = document.createElement('td');
+        const rawValue = row[key];
+        const value = formatter ? formatter(rawValue) : rawValue;
+        td.textContent = value ?? '—';
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
 
   element.innerHTML = '';
   element.appendChild(thead);
   element.appendChild(tbody);
 };
 
+const normalizeMode = (mode) => {
+  if (!mode) return '—';
+  switch (mode) {
+    case 'performance':
+      return 'Производительность';
+    case 'fault-tolerance':
+      return 'Отказоустойчивость';
+    default:
+      return mode;
+  }
+};
+
+const updateClusterMeta = (snapshot) => {
+  const cluster = snapshot.cluster || {};
+  document.getElementById('cluster-title').textContent = cluster.name || 'Кластер не определен';
+  document.getElementById('cluster-uuid').textContent = cluster.uuid || '—';
+  document.getElementById('cluster-host').textContent = cluster.host || '—';
+  document.getElementById('cluster-port').textContent = cluster.port ?? '—';
+  document.getElementById('cluster-mode').textContent = normalizeMode(cluster.load_balancing_mode);
+  document.getElementById('cluster-processes').textContent = snapshot.processes.length;
+};
+
 const updateMetrics = (snapshot) => {
   document.getElementById('metric-infobases').textContent = snapshot.infobases.length;
   document.getElementById('metric-sessions').textContent = snapshot.sessions.length;
   document.getElementById('metric-connections').textContent = snapshot.connections.length;
+  document.getElementById('metric-processes').textContent = snapshot.processes.length;
   document.getElementById('metric-locks').textContent = snapshot.locks.length;
-  document.getElementById('cluster-name').textContent = snapshot.cluster?.name ?? '—';
 };
 
 const updateLicenses = (licenses) => {
   const list = document.getElementById('licenses-list');
   list.innerHTML = '';
+
   if (!licenses.length) {
     const li = document.createElement('li');
+    li.className = 'text-sm text-slate-400';
     li.textContent = 'Нет активных лицензий';
     list.appendChild(li);
     return;
   }
+
   licenses.forEach((license) => {
     const li = document.createElement('li');
+
     const name = document.createElement('span');
-    name.className = 'text-slate-100 font-medium';
+    name.className = 'text-base font-medium text-slate-100';
     name.textContent = license.full_presentation || license.user_name || license.session;
 
     const badge = document.createElement('span');
-    badge.className = 'tag badge-purple mt-2';
+    badge.className = 'tag badge-purple mt-1';
     badge.textContent = license.license_type || 'Неизвестно';
 
     const details = document.createElement('span');
-    details.className = 'text-sm text-slate-400 mt-1';
+    details.className = 'text-xs text-slate-400';
     details.textContent = `${license.host || '—'} • ${license.series || '—'}`;
 
     li.appendChild(name);
@@ -142,58 +188,6 @@ const updateLicenses = (licenses) => {
     li.appendChild(details);
     list.appendChild(li);
   });
-};
-
-const ensureChart = () => {
-  if (state.chart) return state.chart;
-  const options = {
-    chart: {
-      type: 'area',
-      height: 320,
-      toolbar: { show: false },
-      foreColor: '#94a3b8'
-    },
-    grid: {
-      borderColor: 'rgba(148, 163, 184, 0.2)'
-    },
-    stroke: {
-      curve: 'smooth',
-      width: 3
-    },
-    dataLabels: {
-      enabled: false
-    },
-    fill: {
-      type: 'gradient',
-      gradient: {
-        shadeIntensity: 1,
-        opacityFrom: 0.35,
-        opacityTo: 0,
-        stops: [0, 90, 100]
-      }
-    },
-    series: [
-      {
-        name: 'Сеансы',
-        data: []
-      }
-    ],
-    xaxis: {
-      type: 'datetime'
-    },
-    colors: ['#38bdf8']
-  };
-  state.chart = new ApexCharts(document.querySelector('#sessions-chart'), options);
-  state.chart.render();
-  return state.chart;
-};
-
-const updateChart = (snapshot) => {
-  const chart = ensureChart();
-  const timestamp = new Date().getTime();
-  const existing = chart.w.globals.series[0].data || [];
-  const nextData = [...existing, [timestamp, snapshot.sessions.length]].slice(-60);
-  chart.updateSeries([{ name: 'Сеансы', data: nextData }]);
 };
 
 const fetchSettings = async () => {
@@ -210,10 +204,12 @@ const fetchSettings = async () => {
 
 const updateSnapshot = (snapshot) => {
   state.lastSnapshot = snapshot;
+  updateClusterMeta(snapshot);
   updateMetrics(snapshot);
-  updateChart(snapshot);
   updateLicenses(snapshot.licenses || []);
-  document.getElementById('last-updated').textContent = `Обновлено ${formatDateTime(new Date().toISOString())}`;
+  document.getElementById('last-updated').textContent = `Последнее обновление: ${formatDateTime(
+    new Date().toISOString()
+  )}`;
 
   Object.entries(tableConfigs).forEach(([key, config]) => {
     renderTable(config, snapshot[key] || []);
