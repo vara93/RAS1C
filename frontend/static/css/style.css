@@ -326,30 +326,102 @@ body.dashboard {
   gap: clamp(1.75rem, 3vw, 2.5rem);
 }
 
-.cluster-grid {
+.cluster-summary {
   display: grid;
   gap: clamp(1.5rem, 3vw, 2rem);
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
 }
 
-.cluster-card {
+.cluster-summary__info,
+.cluster-summary__processes {
   background: rgba(255, 255, 255, 0.92);
   border-radius: var(--radius-md);
-  padding: clamp(1.5rem, 3vw, 1.9rem);
-  border: 1px solid rgba(148, 163, 184, 0.2);
-  box-shadow: 0 24px 48px -32px rgba(15, 23, 42, 0.35);
+  padding: clamp(1.6rem, 3vw, 2rem);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  box-shadow: 0 24px 48px -34px rgba(15, 23, 42, 0.35);
   backdrop-filter: blur(6px);
   display: flex;
   flex-direction: column;
-  gap: 1.1rem;
+  gap: 1.25rem;
 }
 
-.cluster-card__title {
+.cluster-summary__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.cluster-summary__heading-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.cluster-summary__eyebrow {
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.cluster-summary__title {
+  margin: 0;
+  font-size: 1.35rem;
+  font-weight: 600;
+}
+
+.cluster-summary__subtitle {
   margin: 0;
   font-size: 1.05rem;
   font-weight: 600;
   color: var(--text-secondary);
-  letter-spacing: 0.02em;
+}
+
+.cluster-summary__uuid {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-radius: 999px;
+  padding: 0.45rem 1.1rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  background: rgba(59, 130, 246, 0.12);
+  color: var(--accent);
+}
+
+.cluster-summary__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1.1rem 1.5rem;
+  margin: 0;
+  padding: 0;
+}
+
+.cluster-summary__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.cluster-summary__item dt {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.24em;
+  color: var(--text-muted);
+}
+
+.cluster-summary__item dd {
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  word-break: break-word;
+}
+
+.cluster-summary__table {
+  margin-top: 0.2rem;
 }
 
 .panel--cluster {
@@ -437,15 +509,15 @@ body.dashboard {
 }
 
 .tab-button {
-  border: 1px solid rgba(148, 163, 184, 0.4);
+  border: 1px solid rgba(148, 163, 184, 0.45);
   border-radius: var(--radius-sm);
-  background: linear-gradient(135deg, rgba(248, 250, 255, 0.95), rgba(241, 245, 255, 0.85));
+  background: rgba(255, 255, 255, 0.9);
   color: var(--text-secondary);
   font-weight: 600;
-  font-size: 0.95rem;
-  padding: 0.85rem 1rem;
+  font-size: 0.98rem;
+  padding: 0.95rem 1.1rem;
   cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -456,14 +528,15 @@ body.dashboard {
 .tab-button:hover {
   color: var(--accent);
   transform: translateY(-1px);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 16px 30px -24px rgba(37, 99, 235, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 1), 0 18px 32px -24px rgba(37, 99, 235, 0.55);
+  border-color: rgba(37, 99, 235, 0.4);
 }
 
 .tab-button.is-active {
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.18), rgba(14, 165, 233, 0.2));
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(191, 219, 254, 0.65));
   color: var(--accent-strong);
-  border-color: rgba(37, 99, 235, 0.35);
-  box-shadow: 0 20px 40px -26px rgba(37, 99, 235, 0.75);
+  border-color: rgba(37, 99, 235, 0.65);
+  box-shadow: 0 24px 44px -28px rgba(37, 99, 235, 0.75);
 }
 
 .tab-panels {
@@ -500,40 +573,6 @@ body.dashboard {
 
 .panel-body--list {
   padding: 0;
-}
-
-.cluster-overview {
-  width: 100%;
-  border-collapse: collapse;
-  border-radius: var(--radius-sm);
-  overflow: hidden;
-  table-layout: fixed;
-}
-
-.cluster-overview thead {
-  background: rgba(37, 99, 235, 0.1);
-  color: var(--text-primary);
-}
-
-.cluster-overview th,
-.cluster-overview td {
-  padding: 1rem 1.2rem;
-  text-align: left;
-  font-size: 0.95rem;
-  word-break: break-word;
-}
-
-.cluster-overview th {
-  font-weight: 600;
-  letter-spacing: 0.02em;
-}
-
-.cluster-overview tbody tr {
-  background: #fff;
-}
-
-.cluster-overview tbody tr td {
-  border-top: 1px solid rgba(148, 163, 184, 0.24);
 }
 
 

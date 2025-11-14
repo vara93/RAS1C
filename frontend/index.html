@@ -72,49 +72,56 @@
         <div class="container">
           <div class="content-shell stack">
             <section class="panel panel--data">
-              <div class="panel-header panel-header--data">
-                <div class="panel-heading">
-                  <p class="panel-eyebrow">Локальный кластер</p>
-                  <h2 id="cluster-title">Кластер не определен</h2>
-                </div>
-                <span id="cluster-uuid" class="badge badge--light">—</span>
-              </div>
               <div class="panel-body panel-body--data">
-                <div class="cluster-grid">
-                  <article class="cluster-card">
-                    <h3 class="cluster-card__title">Данные кластера</h3>
-                    <table class="cluster-overview">
-                      <thead>
-                        <tr>
-                          <th>Сервер</th>
-                          <th>Порт</th>
-                          <th>Балансировка</th>
-                          <th>Рабочие процессы</th>
-                          <th>Сеансы</th>
-                          <th>Соединения</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        <tr>
-                          <td id="cluster-host">—</td>
-                          <td id="cluster-port">—</td>
-                          <td id="cluster-mode">—</td>
-                          <td id="cluster-processes">—</td>
-                          <td id="cluster-sessions">—</td>
-                          <td id="cluster-connections">—</td>
-                        </tr>
-                      </tbody>
-                    </table>
-                  </article>
-                  <article class="cluster-card">
-                    <h3 class="cluster-card__title">Процессы кластера</h3>
-                    <div class="table-wrapper table-wrapper--flush">
-                      <table class="data-table" id="processes-table"></table>
-                    </div>
-                  </article>
-                </div>
-
                 <div class="tabset">
+                  <div class="cluster-summary">
+                    <section class="cluster-summary__info">
+                      <header class="cluster-summary__header">
+                        <div class="cluster-summary__heading-text">
+                          <p class="cluster-summary__eyebrow">Локальный кластер</p>
+                          <h2 id="cluster-title" class="cluster-summary__title">Кластер не определен</h2>
+                        </div>
+                        <span id="cluster-uuid" class="cluster-summary__uuid">—</span>
+                      </header>
+                      <dl class="cluster-summary__grid">
+                        <div class="cluster-summary__item">
+                          <dt>Сервер</dt>
+                          <dd id="cluster-host">—</dd>
+                        </div>
+                        <div class="cluster-summary__item">
+                          <dt>Порт</dt>
+                          <dd id="cluster-port">—</dd>
+                        </div>
+                        <div class="cluster-summary__item">
+                          <dt>Балансировка</dt>
+                          <dd id="cluster-mode">—</dd>
+                        </div>
+                        <div class="cluster-summary__item">
+                          <dt>Рабочие процессы</dt>
+                          <dd id="cluster-processes">—</dd>
+                        </div>
+                        <div class="cluster-summary__item">
+                          <dt>Сеансы</dt>
+                          <dd id="cluster-sessions">—</dd>
+                        </div>
+                        <div class="cluster-summary__item">
+                          <dt>Соединения</dt>
+                          <dd id="cluster-connections">—</dd>
+                        </div>
+                      </dl>
+                    </section>
+                    <section class="cluster-summary__processes">
+                      <header class="cluster-summary__header">
+                        <div class="cluster-summary__heading-text">
+                          <p class="cluster-summary__eyebrow">Процессы кластера</p>
+                          <h3 class="cluster-summary__subtitle">Текущая активность</h3>
+                        </div>
+                      </header>
+                      <div class="table-wrapper table-wrapper--flush cluster-summary__table">
+                        <table class="data-table" id="processes-table"></table>
+                      </div>
+                    </section>
+                  </div>
                   <div class="tablist" role="tablist" aria-label="Разделы данных">
                     <button class="tab-button is-active" role="tab" aria-selected="true" data-tab="infobases">
                       Информационные базы
