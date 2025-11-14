@@ -61,7 +61,7 @@ const tableConfigs = {
     emptyMessage: 'Нет подключений'
   },
   processes: {
-    element: document.getElementById('processes-table'),
+    element: document.getElementById('processes-tab-table'),
     columns: [
       { key: 'uuid', label: 'UUID' },
       { key: 'host', label: 'Хост' },
@@ -87,6 +87,24 @@ const tableConfigs = {
     emptyMessage: 'Блокировки отсутствуют'
   }
 };
+
+const processesCardConfig = {
+  element: document.getElementById('processes-table'),
+  columns: [
+    { key: 'host', label: 'Хост' },
+    { key: 'port', label: 'Порт' },
+    { key: 'pid', label: 'PID' },
+    { key: 'available_perfomance', label: 'Производительность' },
+    { key: 'connections', label: 'Соединений' },
+    {
+      key: 'running',
+      label: 'Статус',
+      formatter: (value) => (value === true || value === 'yes' ? 'Работает' : 'Остановлен')
+    }
+  ],
+  emptyMessage: 'Нет активных процессов'
+};
+
 
 const setActiveTab = (tabId, { focus = false } = {}) => {
   state.activeTab = tabId;
@@ -222,6 +240,7 @@ const updateSnapshot = (snapshot) => {
   state.lastSnapshot = snapshot;
   updateClusterMeta(snapshot);
   updateMetrics(snapshot);
+  renderTable(processesCardConfig, snapshot.processes || []);
   document.getElementById('last-updated').textContent = `Последнее обновление: ${formatDateTime(
     new Date().toISOString()
   )}`;

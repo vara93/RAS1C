@@ -71,100 +71,97 @@
       <main class="main">
         <div class="container">
           <div class="content-shell stack">
-          <section class="panel panel--cluster">
-            <div class="panel-header">
-              <div>
-                <p class="panel-eyebrow">Кластер</p>
-                <h2 id="cluster-title">Кластер не определен</h2>
+            <section class="panel panel--data">
+              <div class="panel-header panel-header--data">
+                <div class="panel-heading">
+                  <p class="panel-eyebrow">Локальный кластер</p>
+                  <h2 id="cluster-title">Кластер не определен</h2>
+                </div>
+                <span id="cluster-uuid" class="badge badge--light">—</span>
               </div>
-              <span id="cluster-uuid" class="badge badge--light">—</span>
-            </div>
-            <div class="panel-body">
-              <table class="cluster-overview">
-                <thead>
-                  <tr>
-                    <th>Сервер</th>
-                    <th>Порт</th>
-                    <th>Балансировка</th>
-                    <th>Рабочие процессы</th>
-                    <th>Сеансы</th>
-                    <th>Соединения</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td id="cluster-host">—</td>
-                    <td id="cluster-port">—</td>
-                    <td id="cluster-mode">—</td>
-                    <td id="cluster-processes">—</td>
-                    <td id="cluster-sessions">—</td>
-                    <td id="cluster-connections">—</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </section>
+              <div class="panel-body panel-body--data">
+                <div class="cluster-grid">
+                  <article class="cluster-card">
+                    <h3 class="cluster-card__title">Данные кластера</h3>
+                    <table class="cluster-overview">
+                      <thead>
+                        <tr>
+                          <th>Сервер</th>
+                          <th>Порт</th>
+                          <th>Балансировка</th>
+                          <th>Рабочие процессы</th>
+                          <th>Сеансы</th>
+                          <th>Соединения</th>
+                        </tr>
+                      </thead>
+                      <tbody>
+                        <tr>
+                          <td id="cluster-host">—</td>
+                          <td id="cluster-port">—</td>
+                          <td id="cluster-mode">—</td>
+                          <td id="cluster-processes">—</td>
+                          <td id="cluster-sessions">—</td>
+                          <td id="cluster-connections">—</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </article>
+                  <article class="cluster-card">
+                    <h3 class="cluster-card__title">Процессы кластера</h3>
+                    <div class="table-wrapper table-wrapper--flush">
+                      <table class="data-table" id="processes-table"></table>
+                    </div>
+                  </article>
+                </div>
 
-          <section class="grid grid--halves">
-            <article class="panel">
-              <div class="panel-header">
-                <div>
-                  <p class="panel-eyebrow">Инфраструктура</p>
-                  <h2>Процессы кластера</h2>
+                <div class="tabset">
+                  <div class="tablist" role="tablist" aria-label="Разделы данных">
+                    <button class="tab-button is-active" role="tab" aria-selected="true" data-tab="infobases">
+                      Информационные базы
+                    </button>
+                    <button class="tab-button" role="tab" aria-selected="false" data-tab="sessions">
+                      Сеансы
+                    </button>
+                    <button class="tab-button" role="tab" aria-selected="false" data-tab="connections">
+                      Соединения
+                    </button>
+                    <button class="tab-button" role="tab" aria-selected="false" data-tab="processes">
+                      Рабочие процессы
+                    </button>
+                    <button class="tab-button" role="tab" aria-selected="false" data-tab="locks">
+                      Блокировки
+                    </button>
+                  </div>
+                  <div class="tab-panels">
+                    <div class="tab-panel is-active" role="tabpanel" data-tab-panel="infobases">
+                      <div class="table-wrapper">
+                        <table class="data-table" id="infobases-table"></table>
+                      </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" data-tab-panel="sessions" hidden>
+                      <div class="table-wrapper">
+                        <table class="data-table" id="sessions-table"></table>
+                      </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" data-tab-panel="connections" hidden>
+                      <div class="table-wrapper">
+                        <table class="data-table" id="connections-table"></table>
+                      </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" data-tab-panel="processes" hidden>
+                      <div class="table-wrapper">
+                        <table class="data-table" id="processes-tab-table"></table>
+                      </div>
+                    </div>
+                    <div class="tab-panel" role="tabpanel" data-tab-panel="locks" hidden>
+                      <div class="table-wrapper">
+                        <table class="data-table" id="locks-table"></table>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
-              <div class="panel-body panel-body--table">
-                <div class="table-wrapper">
-                  <table class="data-table" id="processes-table"></table>
-                </div>
-              </div>
-            </article>
-          </section>
-
-          <section class="panel panel--tabs">
-            <div class="panel-header panel-header--tabs">
-              <div>
-                <p class="panel-eyebrow">Данные</p>
-                <h2>Обзор информационных объектов</h2>
-              </div>
-              <div class="tablist" role="tablist" aria-label="Разделы данных">
-                <button class="tab-button is-active" role="tab" aria-selected="true" data-tab="infobases">
-                  Информационные базы
-                </button>
-                <button class="tab-button" role="tab" aria-selected="false" data-tab="sessions">
-                  Сеансы
-                </button>
-                <button class="tab-button" role="tab" aria-selected="false" data-tab="connections">
-                  Соединения
-                </button>
-                <button class="tab-button" role="tab" aria-selected="false" data-tab="locks">
-                  Блокировки
-                </button>
-              </div>
-            </div>
-            <div class="panel-body panel-body--table">
-              <div class="tab-panel is-active" role="tabpanel" data-tab-panel="infobases">
-                <div class="table-wrapper">
-                  <table class="data-table" id="infobases-table"></table>
-                </div>
-              </div>
-              <div class="tab-panel" role="tabpanel" data-tab-panel="sessions" hidden>
-                <div class="table-wrapper">
-                  <table class="data-table" id="sessions-table"></table>
-                </div>
-              </div>
-              <div class="tab-panel" role="tabpanel" data-tab-panel="connections" hidden>
-                <div class="table-wrapper">
-                  <table class="data-table" id="connections-table"></table>
-                </div>
-              </div>
-              <div class="tab-panel" role="tabpanel" data-tab-panel="locks" hidden>
-                <div class="table-wrapper">
-                  <table class="data-table" id="locks-table"></table>
-                </div>
-              </div>
-            </div>
-          </section>
+            </section>
           </div>
         </div>
       </main>
