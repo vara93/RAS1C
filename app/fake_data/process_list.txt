@@ -1,0 +1,24 @@
+process : 1dd0340b-e162-4b57-a0e6-b9dad08baf87
+host : t03-1c11.fd.local
+port : 1560
+pid : 449636
+turned-on : yes
+running : yes
+started-at : 2025-11-11T18:34:01
+use : used
+available-perfomance : 416
+capacity : 1000
+connections : 6
+
+process : 9d7ca594-c16f-4861-a1dc-e1184378f242
+host : t03-1c12.fd.local
+port : 1560
+pid : 1403330
+turned-on : yes
+running : yes
+started-at : 2025-11-11T10:31:54
+use : used
+available-perfomance : 526
+capacity : 1000
+connections : 1
+
