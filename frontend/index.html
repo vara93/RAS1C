@@ -15,32 +15,30 @@
   <body class="dashboard">
     <div class="page">
       <header class="app-header">
-        <div class="app-header__inner">
-          <div class="app-header__brand">
-            <div class="brand-icon">1C</div>
-            <div class="brand-copy">
-              <p class="brand-eyebrow">RAS Observatory</p>
-              <h1 class="brand-title">Мониторинг кластера 1С:Предприятие</h1>
-              <p class="brand-subtitle">
-                Контролируйте доступность RAS, рабочие процессы и лицензии в режиме реального времени.
-              </p>
-            </div>
+        <div class="app-header__brand">
+          <div class="brand-icon">1C</div>
+          <div class="brand-copy">
+            <p class="brand-eyebrow">RAS Observatory</p>
+            <h1 class="brand-title">Мониторинг кластера 1С:Предприятие</h1>
+            <p class="brand-subtitle">
+              Контролируйте доступность RAS, рабочие процессы и лицензии в режиме реального времени.
+            </p>
           </div>
-          <div class="app-header__status">
-            <div class="status-block">
-              <span class="status-label">RAS адрес</span>
-              <span id="ras-address" class="status-value">—</span>
-            </div>
-            <div class="toolbar">
-              <label class="switch">
-                <input type="checkbox" id="auto-refresh-toggle" checked />
-                <span class="switch-track"></span>
-                <span class="switch-label">Автообновление</span>
-              </label>
-              <button id="refresh-button" class="btn btn-primary">Обновить</button>
-            </div>
-            <span id="last-updated" class="status-muted">Данные не загружены</span>
+        </div>
+        <div class="app-header__status">
+          <div class="status-block">
+            <span class="status-label">RAS адрес</span>
+            <span id="ras-address" class="status-value">—</span>
           </div>
+          <div class="toolbar">
+            <label class="switch">
+              <input type="checkbox" id="auto-refresh-toggle" checked />
+              <span class="switch-track"></span>
+              <span class="switch-label">Автообновление</span>
+            </label>
+            <button id="refresh-button" class="btn btn-primary">Обновить</button>
+          </div>
+          <span id="last-updated" class="status-muted">Данные не загружены</span>
         </div>
       </header>
       <main class="page-main">
