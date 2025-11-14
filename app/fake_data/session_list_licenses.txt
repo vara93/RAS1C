@@ -1,0 +1,12 @@
+session : 695aa44b-b3c1-423a-9d3e-38d358377fe8
+user-name : MikhalevskyAA@fd.local
+host : OSS-3
+app-id : 1CV8C
+series : "ORGL8"
+issued-by-server : no
+license-type : HASP
+net : no
+max-users-all : 1
+max-users-cur : 1
+full-presentation : "Клиент, 38340, ORGL8 Локальный 1"
+

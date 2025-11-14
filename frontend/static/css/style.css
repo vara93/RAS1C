@@ -1,0 +1,137 @@
+:root {
+  color-scheme: dark;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+.metric-card {
+  background: linear-gradient(135deg, rgba(56, 189, 248, 0.2), rgba(14, 116, 144, 0.1));
+  border-radius: 1.25rem;
+  padding: 1.5rem;
+  box-shadow: inset 0 1px 0 rgba(148, 163, 184, 0.1), 0 24px 50px -35px rgba(56, 189, 248, 0.45);
+  backdrop-filter: blur(16px);
+  border: 1px solid rgba(148, 163, 184, 0.08);
+}
+
+.metric-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: rgb(148, 163, 184);
+}
+
+.metric-value {
+  font-size: 2.75rem;
+  font-weight: 600;
+  margin-top: 0.75rem;
+  color: rgb(224, 242, 254);
+}
+
+.metric-subtitle {
+  font-size: 0.85rem;
+  margin-top: 0.25rem;
+  color: rgb(148, 163, 184);
+}
+
+.panel {
+  background: rgba(15, 23, 42, 0.65);
+  border-radius: 1.25rem;
+  border: 1px solid rgba(148, 163, 184, 0.08);
+  box-shadow: 0 20px 45px -35px rgba(15, 118, 110, 0.65);
+}
+
+.panel-header {
+  padding: 1.5rem 1.75rem 1rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.panel-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: rgb(226, 232, 240);
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table thead {
+  background: rgba(30, 41, 59, 0.8);
+  color: rgb(148, 163, 184);
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  letter-spacing: 0.12em;
+}
+
+.data-table th,
+.data-table td {
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.08);
+  white-space: nowrap;
+}
+
+.data-table tbody tr:hover {
+  background: rgba(79, 70, 229, 0.08);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 9999px;
+  background: rgba(79, 70, 229, 0.15);
+  color: rgb(165, 180, 252);
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.chart {
+  min-height: 320px;
+  padding: 1rem 1.75rem 1.75rem;
+}
+
+#licenses-list li {
+  padding: 1rem 1.5rem;
+}
+
+#licenses-list li span {
+  display: block;
+}
+
+.badge-green {
+  background: rgba(16, 185, 129, 0.12);
+  color: rgb(110, 231, 183);
+}
+
+.badge-amber {
+  background: rgba(251, 191, 36, 0.12);
+  color: rgb(253, 230, 138);
+}
+
+.badge-purple {
+  background: rgba(168, 85, 247, 0.12);
+  color: rgb(216, 180, 254);
+}
+
+.scroll-shadow {
+  overflow: auto;
+  position: relative;
+}
+
+.scroll-shadow::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 24px;
+  pointer-events: none;
+  background: linear-gradient(to bottom, rgba(15, 23, 42, 0), rgba(15, 23, 42, 0.95));
+}

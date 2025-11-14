@@ -1,0 +1,16 @@
+connection : 0cd92c1a-96dd-4059-8c99-3450544bc679
+conn-id : 0
+host : t03-1c11.fd.local
+process : 1dd0340b-e162-4b57-a0e6-b9dad08baf87
+infobase : 9e26da18-6281-421b-a0b8-f6d6f09cb331
+application : "JobScheduler"
+connected-at : 2025-11-13T11:59:33
+
+connection : ca6e98fd-6e29-43a4-bee5-71261e84c4c7
+conn-id : 5763
+host : OSS-3
+process : 1dd0340b-e162-4b57-a0e6-b9dad08baf87
+infobase : 9e26da18-6281-421b-a0b8-f6d6f09cb331
+application : "1CV8C"
+connected-at : 2025-11-13T11:59:14
+
