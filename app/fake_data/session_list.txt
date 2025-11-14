@@ -1,0 +1,21 @@
+session : 695aa44b-b3c1-423a-9d3e-38d358377fe8
+session-id : 1
+infobase : 9e26da18-6281-421b-a0b8-f6d6f09cb331
+connection : 00000000-0000-0000-0000-000000000000
+process : 00000000-0000-0000-0000-000000000000
+user-name : MikhalevskyAA@fd.local
+host : OSS-3
+app-id : 1CV8C
+locale : ru
+started-at : 2025-11-13T11:59:19
+last-active-at : 2025-11-13T11:59:40
+hibernate : no
+passive-session-hibernate-time : 1200
+hibernate-session-terminate-time : 86400
+blocked-by-dbms : 0
+blocked-by-ls : 0
+bytes-all : 109330
+bytes-last-5min : 109330
+calls-all : 140
+calls-last-5min : 140
+

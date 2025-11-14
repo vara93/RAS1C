@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>1C RAS Monitor</title>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/inter/400.css"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@fontsource/inter/600.css"
+    />
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography,aspect-ratio"></script>
+    <link rel="stylesheet" href="/static/css/style.css" />
+  </head>
+  <body class="bg-slate-950 text-slate-100 font-inter">
+    <div id="app" class="min-h-screen flex flex-col">
+      <header class="border-b border-slate-800/80 bg-slate-950/80 backdrop-blur">
+        <div class="max-w-7xl mx-auto px-6 py-8 flex flex-wrap items-end justify-between gap-6">
+          <div class="max-w-xl space-y-2">
+            <p class="text-xs uppercase tracking-[0.35em] text-sky-400">1C:Enterprise</p>
+            <h1 class="text-3xl md:text-4xl font-semibold">RAS Enterprise Monitor</h1>
+            <p class="text-sm text-slate-400">
+              Централизованная панель контроля удаленного администрирования и рабочих процессов кластера 1С.
+            </p>
+          </div>
+          <div class="flex flex-col items-end text-right gap-1">
+            <span class="text-xs uppercase tracking-[0.25em] text-slate-500">RAS адрес</span>
+            <span id="ras-address" class="text-lg font-semibold text-slate-50">—</span>
+            <span id="last-updated" class="text-xs text-slate-500"></span>
+          </div>
+        </div>
+      </header>
+      <main class="flex-1">
+        <section class="max-w-7xl mx-auto px-6 py-10 space-y-10">
+          <div class="grid gap-6 xl:grid-cols-[minmax(0,1.65fr)_minmax(0,1fr)] items-start">
+            <article class="panel panel-highlight">
+              <div class="panel-header panel-header--flush">
+                <div class="space-y-1">
+                  <h2 class="panel-title">Статус кластера</h2>
+                  <p id="cluster-title" class="panel-subtitle">Кластер не определен</p>
+                </div>
+                <span class="cluster-pill" id="cluster-uuid">—</span>
+              </div>
+              <div class="panel-body space-y-6">
+                <dl class="detail-grid">
+                  <div>
+                    <dt>Хост</dt>
+                    <dd id="cluster-host">—</dd>
+                  </div>
+                  <div>
+                    <dt>Порт</dt>
+                    <dd id="cluster-port">—</dd>
+                  </div>
+                  <div>
+                    <dt>Балансировка</dt>
+                    <dd id="cluster-mode">—</dd>
+                  </div>
+                  <div>
+                    <dt>Рабочих процессов</dt>
+                    <dd id="cluster-processes">—</dd>
+                  </div>
+                </dl>
+                <div class="metric-grid">
+                  <article class="metric-card">
+                    <p class="metric-label">Информационные базы</p>
+                    <p id="metric-infobases" class="metric-value">—</p>
+                  </article>
+                  <article class="metric-card">
+                    <p class="metric-label">Активные сеансы</p>
+                    <p id="metric-sessions" class="metric-value">—</p>
+                  </article>
+                  <article class="metric-card">
+                    <p class="metric-label">Соединения</p>
+                    <p id="metric-connections" class="metric-value">—</p>
+                  </article>
+                  <article class="metric-card">
+                    <p class="metric-label">Рабочие процессы</p>
+                    <p id="metric-processes" class="metric-value">—</p>
+                  </article>
+                  <article class="metric-card">
+                    <p class="metric-label">Блокировки</p>
+                    <p id="metric-locks" class="metric-value">—</p>
+                  </article>
+                </div>
+              </div>
+            </article>
+            <article class="panel h-full">
+              <div class="panel-header">
+                <h2 class="panel-title">Активные лицензии</h2>
+              </div>
+              <div class="panel-body panel-body--compact">
+                <ul id="licenses-list" class="divide-y divide-slate-800/60"></ul>
+              </div>
+            </article>
+          </div>
+          <article class="panel">
+            <div class="panel-header">
+              <h2 class="panel-title">Информационные базы</h2>
+            </div>
+            <div class="panel-body panel-body--table">
+              <div class="table-wrapper">
+                <table class="data-table" id="infobases-table"></table>
+              </div>
+            </div>
+          </article>
+          <div class="grid gap-6 xl:grid-cols-2">
+            <article class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Сеансы</h2>
+              </div>
+              <div class="panel-body panel-body--table">
+                <div class="table-wrapper">
+                  <table class="data-table" id="sessions-table"></table>
+                </div>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Соединения</h2>
+              </div>
+              <div class="panel-body panel-body--table">
+                <div class="table-wrapper">
+                  <table class="data-table" id="connections-table"></table>
+                </div>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Процессы</h2>
+              </div>
+              <div class="panel-body panel-body--table">
+                <div class="table-wrapper">
+                  <table class="data-table" id="processes-table"></table>
+                </div>
+              </div>
+            </article>
+            <article class="panel">
+              <div class="panel-header">
+                <h2 class="panel-title">Блокировки</h2>
+              </div>
+              <div class="panel-body panel-body--table">
+                <div class="table-wrapper">
+                  <table class="data-table" id="locks-table"></table>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+      </main>
+      <footer class="border-t border-slate-800 bg-slate-950/80">
+        <div class="max-w-7xl mx-auto px-6 py-4 text-xs md:text-sm text-slate-500 flex flex-wrap items-center justify-between gap-2">
+          <span>© 2025 FD Enterprise IT</span>
+          <span>Порт сервиса: 8080</span>
+        </div>
+      </footer>
+    </div>
+    <script type="module" src="/static/js/app.js"></script>
+  </body>
+</html>
